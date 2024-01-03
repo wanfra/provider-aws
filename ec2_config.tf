@@ -86,15 +86,12 @@ resource "aws_instance" "srv-test-1" {
   subnet_id = aws_subnet.subnet-test-1.id
   vpc_security_group_ids = [aws_security_group.sg-test-1.id]
 
-    provisioner "remote-exec" {
-    inline = [
-      "sudo adduser --disabled-password --gecos '' allan",
-      "sudo adduser --disabled-password --gecos '' william",
-      "sudo usermod -aG sudo allan",
-      "sudo usermod -aG sudo william",
-      "echo 'allan ALL=(ALL:ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers.d/allan",
-      "echo 'william ALL=(ALL:ALL) NOPASSWD:ALL' | sudo tee -a /etc/sudoers.d/william",
-    ]
-  }
+  user_data = <<-EOF
+                #!/bin/bash
+                useradd -m -s /bin/bash william
+                useradd -m -s /bin/bash allan
+                echo "william:password123" | chpasswd
+                echo "allan:password456" | chpasswd
+                EOF
 }
 
