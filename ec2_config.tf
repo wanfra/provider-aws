@@ -10,9 +10,9 @@ resource "aws_security_group" "sg-test-1" {
   vpc_id = aws_vpc.vpc-test-1.id
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
