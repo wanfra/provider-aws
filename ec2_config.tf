@@ -85,7 +85,6 @@ resource "aws_instance" "srv-test-1" {
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.subnet-test-1.id
   vpc_security_group_ids      = [aws_security_group.sg-test-1.id]
-  iam_instance_profile = aws_iam_role.ec2_role.name
 
 
   user_data = <<-EOF
