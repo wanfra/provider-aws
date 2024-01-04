@@ -58,7 +58,7 @@ resource "aws_route_table" "public_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.igw.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {
@@ -83,15 +83,18 @@ resource "aws_instance" "srv-test-1" {
   }
 
   associate_public_ip_address = true
-  subnet_id = aws_subnet.subnet-test-1.id
-  vpc_security_group_ids = [aws_security_group.sg-test-1.id]
+  subnet_id                   = aws_subnet.subnet-test-1.id
+  vpc_security_group_ids      = [aws_security_group.sg-test-1.id]
+  iam_instance_profile = aws_iam_role.ec2_role.name
+
 
   user_data = <<-EOF
-                #!/bin/bash
-                useradd -m -s /bin/bash william
-                useradd -m -s /bin/bash allan
-                echo "william:password123" | chpasswd
-                echo "allan:password456" | chpasswd
-                EOF
+              #!/bin/bash
+              sudo apt update -y
+              sudo apt upgrade -y
+              sudo apt-get install apache2 -y
+              sudo systemctl start apache2
+              sudo bash -c 'echo Batman is on the web server > /var/www/html/index.html'
+              EOF
 }
 
