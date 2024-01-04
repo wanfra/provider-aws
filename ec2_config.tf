@@ -86,14 +86,12 @@ resource "aws_instance" "srv-test-1" {
   subnet_id                   = aws_subnet.subnet-test-1.id
   vpc_security_group_ids      = [aws_security_group.sg-test-1.id]
 
-
   user_data = <<-EOF
               #!/bin/bash
-              sudo apt update -y
-              sudo apt upgrade -y
-              sudo apt-get install apache2 -y
-              sudo systemctl start apache2
-              sudo bash -c 'echo Batman is on the web server > /var/www/html/index.html'
+              apt-get update
+              apt-get install -y apache2
+              systemctl start apache2
+              systemctl enable apache2
               EOF
 }
 
