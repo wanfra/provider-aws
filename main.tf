@@ -3,7 +3,7 @@ terraform {
     organization = "wanfracloud"
 
     workspaces {
-      name = "wanfracloud"
+      name = "provider-aws"
     }
   }
 }
